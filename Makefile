@@ -1,5 +1,5 @@
 TARGET = shell
-OBJ = main.c
+OBJ = main.c parse_input.c
 CFLAGS = -Wall -Wextra -Werror
 CC = gcc
 
