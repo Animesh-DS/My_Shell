@@ -113,4 +113,17 @@ int command_which(char** args,char** env){
     }
 }
 
+int command_help(){
+    printf("Avaliable Commands :\n");
+    printf("%-25s - %s\n","      cd <path to directory>","Changes the current directory");
+    printf("%-25s - %s\n","      pwd","Prints the current working directory");
+    printf("%-25s - %s\n","      env","Displays all working enviroment variables");
+    printf("%-25s - %s\n","      echo <text>","Prints the given text");
+    printf("%-25s - %s\n","      which","Locates an executable in the system's path");
+    printf("%-25s - %s\n","      help","Displays this help message");
+    printf("%-25s - %s\n","      exit","Exit the shell");
+
+    return 0;
+}
+
 
