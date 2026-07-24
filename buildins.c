@@ -80,7 +80,50 @@ int command_echo(char** args,char** env){
 
 //external function path finder in PATH
 char* find_cmd_path(const char* command,char** env){
+    char* original_path = NULL; //stores the original path
+    char* duplicate_path = NULL; //duplicated and store the path to prevent changing of env
+    char* token = NULL; //tokenizes dir from path
+    char full_path[1024]; //Buffer to store the path
     
+    for (size_t i = 0; env[i]; i++){
+        if(strncmp(env[i],"Path=",5)==0||strncmp(env[i],"PATH=",5)==0||strncmp(env[i],"path=",5)==0){
+            original_path = env[i]+5;
+            break;
+        }
+    }
+
+    if(original_path == NULL){
+        printf("Could not Find Path in env\n");
+        return NULL;
+    }
+
+    duplicate_path = strdup(original_path);
+
+    if(duplicate_path==NULL){
+        perror("strcpy");
+        return NULL;
+    }
+
+    token = strtok(duplicate_path,";");
+    while ((token!=NULL)){
+        size_t len = strlen(token);
+        if(token[len-1]!='\\'){
+            snprintf(full_path,sizeof(full_path),"%s%s%s",token,"\\",command);
+        }
+        else{
+            snprintf(full_path,sizeof(full_path),"%s%s",token,command);
+
+        }
+        if(access(full_path,F_OK)==0){
+            free(duplicate_path);
+            return strdup(full_path);
+        }
+
+        token = strtok(NULL,";");
+    }
+    
+    free(duplicate_path);
+    return NULL;
 }
 
 int command_which(char** args,char** env){
