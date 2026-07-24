@@ -5,6 +5,7 @@
 // #include <sys/wait.h>
 
 #define MAX_INPUT 1024
+#define MAX_HISTORY 10
 
 char** parse_input(char* input);
 void free_tokens(char** tokens);
@@ -16,3 +17,6 @@ int command_echo(char** args,char** env);
 int command_which(char** args,char** env);
 int command_env(char** env);
 int command_pwd();
+int command_clear();
+int command_history(char** history);
+int command_help();

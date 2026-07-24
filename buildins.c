@@ -104,11 +104,11 @@ char* find_cmd_path(const char* command,char** env){
         return NULL;
     }
 
-    token = strtok(duplicate_path,";");
+    token = strtok(duplicate_path,":");
     while ((token!=NULL)){
         size_t len = strlen(token);
-        if(token[len-1]!='\\'){
-            snprintf(full_path,sizeof(full_path),"%s%s%s",token,"\\",command);
+        if(token[len-1]!='/'){
+            snprintf(full_path,sizeof(full_path),"%s%s%s",token,"/",command);
         }
         else{
             snprintf(full_path,sizeof(full_path),"%s%s",token,command);
@@ -119,7 +119,7 @@ char* find_cmd_path(const char* command,char** env){
             return strdup(full_path);
         }
 
-        token = strtok(NULL,";");
+        token = strtok(NULL,":");
     }
     
     free(duplicate_path);
@@ -160,16 +160,24 @@ int command_clear(){
     system("clear");
 }
 
+int command_history(char** history){
+    for(int i=0;i<MAX_HISTORY;i++){
+        if(history[i]==NULL) continue;
+        printf("%d - %s\n",i+1,history[i]);
+    }
+    return 0;
+}
 int command_help(){
     printf("Avaliable Commands :\n");
-    printf("%-25s - %s\n","      cd <path to directory>","Changes the current directory");
-    printf("%-25s - %s\n","      pwd","Prints the current working directory");
-    printf("%-25s - %s\n","      env","Displays all working enviroment variables");
-    printf("%-25s - %s\n","      echo <text>","Prints the given text");
-    printf("%-25s - %s\n","      which","Locates an executable in the system's path");
-    printf("%-25s - %s\n","      help","Displays this help message");
-    printf("%-25s - %s\n","      clear","Clears the terminal");
-    printf("%-25s - %s\n","      exit","Exit the shell");
+    printf("%-30s - %s\n","      cd <path to directory>","Changes the current directory");
+    printf("%-30s - %s\n","      pwd","Prints the current working directory");
+    printf("%-30s - %s\n","      env","Displays all working enviroment variables");
+    printf("%-30s - %s\n","      echo <text>","Prints the given text");
+    printf("%-30s - %s\n","      which","Locates an executable in the system's path");
+    printf("%-30s - %s\n","      clear","Clears the terminal");
+    printf("%-30s - %s\n","      exit","Exit the shell");
+    printf("%-30s - %s\n","      help","Displays this help message");
+    
 
     return 0;
 }
